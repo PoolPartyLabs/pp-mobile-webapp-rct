@@ -1,18 +1,29 @@
-import { FunctionComponent, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import Buttons11 from '../components/Buttons11'
-import Tag11 from '../components/Tag11'
-import StatusBadge11 from '../components/StatusBadge11'
-import ContentDivider11 from '../components/ContentDivider11'
-import Slider11 from '../components/Slider11'
-import CompactAvatarGroup11 from '../components/CompactAvatarGroup11'
+import { FunctionComponent, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import Buttons11 from '../components/Buttons11';
+import Tag11 from '../components/Tag11';
+import StatusBadge11 from '../components/StatusBadge11';
+import ContentDivider11 from '../components/ContentDivider11';
+import Slider11 from '../components/Slider11';
+import CompactAvatarGroup11 from '../components/CompactAvatarGroup11';
+import { useAnchorProvider } from '../solana/solana-provider';
+import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import { useAppKitConnection, type Provider } from '@reown/appkit-adapter-solana/react';
+import { deposit as depositCall } from "../utils/deposit";
+import { PublicKey } from '@solana/web3.js';
+import { NFT, POOL_NAME } from '../utils/constants';
 
 const Invest: FunctionComponent = () => {
-  const [searchParams] = useSearchParams()
-  const strategy = searchParams.get('strategy')
-  const riskLevel = strategy === 'high' ? 'High Risk' : 'Low Risk'
-  const apy = strategy === 'high' ? 163.96 : 23.37
-  const [sliderValue, setSliderValue] = useState(50)
+  const [searchParams] = useSearchParams();
+  const strategy = searchParams.get('strategy');
+  const riskLevel = strategy === 'high' ? 'High Risk' : 'Low Risk';
+  const apy = strategy === 'high' ? 163.96 : 23.37;
+  const [sliderValue, setSliderValue] = useState(50);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [txId, setTxId] = useState('');
+
+  const anchorProvider = useAnchorProvider();
+  const { walletProvider } = useAppKitProvider<Provider>('solana');
 
   return (
     <div className="w-full h-[1135px] relative bg-bg-white-0 overflow-hidden flex flex-col items-start justify-start leading-[normal] tracking-[normal]">
@@ -153,9 +164,8 @@ const Invest: FunctionComponent = () => {
                   </div>
                   <div className="flex flex-row items-center justify-start gap-1 text-font-size-body-2">
                     <div
-                      className={`${
-                        strategy === 'high' ? 'text-red-500' : 'text-green-500'
-                      } relative tracking-[-0.2px] leading-font-line-height-body-2 font-font-weight-default-medium`}
+                      className={`${strategy === 'high' ? 'text-red-500' : 'text-green-500'
+                        } relative tracking-[-0.2px] leading-font-line-height-body-2 font-font-weight-default-medium`}
                     >
                       {riskLevel}
                     </div>
@@ -168,21 +178,19 @@ const Invest: FunctionComponent = () => {
                   </div>
                   <div className="self-stretch flex flex-row items-center justify-start gap-1">
                     <div
-                      className={`h-2 w-[58px] rounded-sm ${
-                        strategy === 'high'
-                          ? 'bg-alpha-gray-alpha-10'
-                          : 'bg-green-500'
-                      }`}
+                      className={`h-2 w-[58px] rounded-sm ${strategy === 'high'
+                        ? 'bg-alpha-gray-alpha-10'
+                        : 'bg-green-500'
+                        }`}
                     />
                     <div className="h-2 w-[58px] rounded-sm bg-alpha-gray-alpha-10" />
                     <div className="h-2 w-[57px] rounded-sm bg-alpha-gray-alpha-10" />
                     <div className="h-2 w-[58px] rounded-sm bg-alpha-gray-alpha-10" />
                     <div
-                      className={`h-2 w-[58px] rounded-sm ${
-                        strategy === 'high'
-                          ? 'bg-red-500'
-                          : 'bg-alpha-gray-alpha-10'
-                      }`}
+                      className={`h-2 w-[58px] rounded-sm ${strategy === 'high'
+                        ? 'bg-red-500'
+                        : 'bg-alpha-gray-alpha-10'
+                        }`}
                     />
                   </div>
                   <div className="w-[308px] relative text-font-size-paragraph leading-font-line-height-paragraph font-font-weight-default-normal text-text-sub-600 inline-block">
@@ -193,10 +201,85 @@ const Invest: FunctionComponent = () => {
               </div>
             </div>
           </div>
+          <div className="w-[100vw] flex justify-center">
+            <button
+              onClick={async () => {
+                const { transaction0, transaction1 } = await depositCall(
+                  anchorProvider,
+                  new PublicKey('7CHeAtKNPDPB8xXBCp88pyGwGPJnd8DkhY4WR5TN3u5P'),
+                  NFT,
+                  5,
+                  POOL_NAME
+                );
+
+                if (walletProvider) {
+                  console.log("signAllTransactions");
+                  try {
+                    const signedTransaction = await walletProvider.signAllTransactions([transaction0, transaction1]);
+                    await Promise.all([
+                      anchorProvider.connection.simulateTransaction(signedTransaction[0]),
+                      anchorProvider.connection.simulateTransaction(signedTransaction[1]),
+                    ]);
+                    const sig1 = await anchorProvider.connection.sendTransaction(
+                      signedTransaction[0],
+                      { preflightCommitment: "finalized" }
+                    );
+                    const sig2 = await anchorProvider.connection.sendTransaction(
+                      signedTransaction[1],
+                      { preflightCommitment: "finalized" }
+                    );
+
+                    const { blockhash, lastValidBlockHeight } = await anchorProvider.connection.getLatestBlockhash();
+                    const [confirmation] = await Promise.all([
+                      anchorProvider.connection.confirmTransaction(
+                        { signature: sig1, blockhash, lastValidBlockHeight },
+                        "confirmed"
+                      ),
+                      anchorProvider.connection.confirmTransaction(
+                        { signature: sig2, blockhash, lastValidBlockHeight },
+                        "confirmed"
+                      ),
+                    ]);
+
+                    if (!confirmation || confirmation.value.err) {
+                      throw new Error(`Transaction failed: ${JSON.stringify(confirmation.value.err)}`);
+                    }
+                    console.log('Transaction confirmed:', sig1, '\n', sig2);
+                    setTxId(`https://explorer.solana.com/tx/${sig2}?cluster=custom&customUrl=http://localhost:8899`);
+                    setIsModalOpen(true);
+                  } catch (error) {
+                    console.error("Error signing transactions:", error);
+                  }
+                }
+              }}
+              className="mt-6 px-8 py-3 bg-green-500 text-white rounded-lg font-font-weight-default-medium hover:bg-green-600 transition-colors"
+            >
+              Invest
+            </button>
+
+          </div>
         </section>
       </main>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-gray-200 p-6 rounded-lg shadow-lg">
+            <div className="flex flex-col items-center">
+              <p className="mb-4 text-black">Investment confirmed!</p>
+              <a href={txId} target="_blank" className="mb-4 underline text-blue-500">
+                Transaction ID
+              </a>
+              <button
+                onClick={() => (window.location.href = '/portfolio')}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              >
+                Go to Portfolio
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Invest
+export default Invest;

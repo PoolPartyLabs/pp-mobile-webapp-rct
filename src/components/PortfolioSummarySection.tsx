@@ -62,7 +62,7 @@ const AutoLayoutVertical8: FunctionComponent<AutoLayoutVertical8Type> = ({
                       Total asset value
                     </div>
                     <div className="relative text-font-size-heading-5 tracking-[-0.2px] leading-[32px] font-[500] text-text-strong-950 text-center">
-                      $13,345.67
+                      $169,69
                     </div>
                   </div>
                 </div>

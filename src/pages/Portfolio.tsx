@@ -23,6 +23,8 @@ const Portfolio: FunctionComponent = () => {
   const solanaAccount = useAppKitAccount({ namespace: 'solana' })
   const { walletKit } = useWalletKit() // Get WalletKit from context
 
+  // console.log('walletKit :>> ', walletKit)
+
   console.log('solanaAccount :>> ', solanaAccount)
 
   useEffect(() => {
@@ -31,7 +33,8 @@ const Portfolio: FunctionComponent = () => {
         try {
           // Create a Solana connection to devnet
           const connection = new Connection(
-            'https://api.devnet.solana.com',
+            // 'https://api.devnet.solana.com',
+            'http://localhost:8899',
             'confirmed'
           )
 
@@ -46,7 +49,7 @@ const Portfolio: FunctionComponent = () => {
             solanaAccount.address.length - 4
           )}`
           setFormattedAddress(shortAddress)
-
+ 
           // Fetch balance
           const balanceInLamports = await connection.getBalance(publicKey)
           const balanceInSOL = balanceInLamports / LAMPORTS_PER_SOL
@@ -76,7 +79,7 @@ const Portfolio: FunctionComponent = () => {
   return (
     <div className="w-full h-[100vh] relative bg-bg-white-0 overflow-hidden flex flex-col items-start justify-start leading-[normal] tracking-[normal]">
       <main className="w-full max-w-md px-4 flex flex-col items-center justify-center gap-spacing-spacing-8 z-[0]">
-        {solanaAccount && solanaAccount.address ? (
+        {/* {solanaAccount && solanaAccount.address ? (
           <div className="w-full mt-4 p-4 rounded-radius-10 bg-alpha-gray-alpha-10">
             <h2 className="text-text-strong-950 text-lg font-semibold">
               Wallet Details
@@ -93,7 +96,7 @@ const Portfolio: FunctionComponent = () => {
               Connect your wallet to view balance
             </p>
           </div>
-        )}
+        )} */}
         <PortfolioSummarySection />
         <div className="flex flex-row gap-2">
           <div className="mt-6 h-10 rounded-radius-10 bg-alpha-gray-alpha-10 overflow-hidden flex flex-row items-center justify-center py-0 px-2.5 box-border gap-1 min-h-[40px] max-h-[40px] text-font-size-body-2 text-green-500">

@@ -1,51 +1,82 @@
-import { FunctionComponent, useEffect, useState } from 'react'
-import Wallet from './Wallet'
-import ProcentCircle from './ProcentCircle'
-import Tag11 from './Tag11'
-import Navbar from './Navbar'
-import { useAppKitAccount, useDisconnect } from '@reown/appkit/react'
-import { useAppKitBalance } from '@reown/appkit/react'
-import { useAppKitState } from '@reown/appkit/react'
-import { useWalletInfo } from '@reown/appkit/react'
+import { FunctionComponent, useEffect, useState } from 'react';
+import Wallet from './Wallet';
+import ProcentCircle from './ProcentCircle';
+import Tag11 from './Tag11';
+import Navbar from './Navbar';
+import { useAppKitAccount, useDisconnect } from '@reown/appkit/react';
+import { useAppKitBalance } from '@reown/appkit/react';
+import { useAppKitState } from '@reown/appkit/react';
+import { useWalletInfo } from '@reown/appkit/react';
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 
 export type HomeSummaryType = {
-  className?: string
-}
+  className?: string;
+};
 type BalanceResult = {
   data?: {
-    formatted: string
-    symbol: string
-  }
-  error: string | null
-  isSuccess: boolean
-  isError: boolean
-}
+    formatted: string;
+    symbol: string;
+  };
+  error: string | null;
+  isSuccess: boolean;
+  isError: boolean;
+};
 const HomeSummary: FunctionComponent<HomeSummaryType> = ({
   className = '',
 }) => {
-  const { disconnect } = useDisconnect()
-  const { fetchBalance } = useAppKitBalance()
-  const [balance, setBalance] = useState<BalanceResult | undefined>(undefined)
-  const { isConnected } = useAppKitAccount()
-  const { open, selectedNetworkId } = useAppKitState()
-  const { walletInfo } = useWalletInfo()
+  const { disconnect } = useDisconnect();
+  const { fetchBalance } = useAppKitBalance();
+  const [balance, setBalance] = useState<number | undefined>(undefined);
+  const { isConnected } = useAppKitAccount();
+  const { open, selectedNetworkId } = useAppKitState();
+  const { walletInfo } = useWalletInfo();
+  const solanaAccount = useAppKitAccount({ namespace: 'solana' });
 
   // console.log('walletInfo :>> ', walletInfo.name)
   // console.log('{ open, selectedNetworkId } :>> ', { open, selectedNetworkId })
   useEffect(() => {
     if (isConnected) {
-      fetchBalance()
-        .then(setBalance)
-        .catch((error) => {
-          console.error('Error fetching balance:', error)
-          // You might want to set an error state here or show a notification
-          // For example:
-          // setError('Failed to fetch balance')
-          // or
-          // toast.error('Unable to retrieve your balance')
-        })
+      // fetchBalance()
+      //   .then(setBalance)
+      //   .catch((error) => {
+      //     console.error('Error fetching balance:', error)
+      //     // You might want to set an error state here or show a notification
+      //     // For example:
+      //     // setError('Failed to fetch balance')
+      //     // or
+      //     // toast.error('Unable to retrieve your balance')
+      //   })
+
+      const fetchBalance = async () => {
+        if (solanaAccount && solanaAccount.address) {
+          try {
+            // Create a Solana connection to devnet
+            const connection = new Connection(
+              // 'https://api.devnet.solana.com',
+              'http://localhost:8899',
+              'confirmed'
+            );
+
+            // Convert address string to PublicKey
+            const publicKey = new PublicKey(solanaAccount.address);
+
+
+            // Fetch balance
+            const balanceInLamports = await connection.getBalance(publicKey);
+            const balanceInSOL = balanceInLamports / LAMPORTS_PER_SOL;
+            setBalance(balanceInSOL);
+
+            console.log('Balance fetched:', balanceInSOL, 'SOL');
+          } catch (error) {
+            console.error('Error fetching balance:', error);
+            setBalance(0);
+          }
+        }
+      };
+
+      fetchBalance();
     }
-  }, [isConnected, fetchBalance])
+  }, [isConnected, fetchBalance, solanaAccount]);
 
   return (
     <section
@@ -95,8 +126,8 @@ const HomeSummary: FunctionComponent<HomeSummaryType> = ({
                   Wallet Balance
                 </div>
                 <div className="relative text-font-size-heading-5 tracking-[-0.2px] leading-[32px] font-[500] text-text-strong-950 text-center">
-                  {(balance && balance.data?.formatted) || 0}{' '}
-                  {balance && balance.data?.symbol}
+                  {(balance && balance.toFixed(4)) || 0}{' '}
+                  {balance && 'SOL'}
                 </div>
               </div>
             </div>
@@ -122,7 +153,7 @@ const HomeSummary: FunctionComponent<HomeSummaryType> = ({
         <Navbar />
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default HomeSummary
+export default HomeSummary;

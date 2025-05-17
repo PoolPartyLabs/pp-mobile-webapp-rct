@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import Import2 from "./Import2";
 
+
 export type AutoLayoutVerticalType = {
   className?: string;
   deposit?: string;
@@ -17,7 +18,8 @@ const AutoLayoutVertical: FunctionComponent<AutoLayoutVerticalType> = ({
       <div className="w-14 h-14 rounded-radius-full bg-alpha-gray-alpha-10 overflow-hidden shrink-0 flex flex-row items-center justify-center">
         <Import2 style="Line" />
       </div>
-      <div className="relative leading-font-line-height-paragraph font-font-weight-default-normal">
+      <div className="relative leading-font-line-height-paragraph font-font-weight-default-normal"
+      >
         {deposit}
       </div>
     </div>

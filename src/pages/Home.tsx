@@ -1,26 +1,27 @@
-import { FunctionComponent, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import HomeSummary from '../components/HomeSummary'
-import StartEarning from '../components/StartEarning'
-import Navbar1 from '../components/Navbar1'
-import { useAppKitAccount } from '@reown/appkit/react'
+import { FC, FunctionComponent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import HomeSummary from '../components/HomeSummary';
+import StartEarning from '../components/StartEarning';
+import Navbar1 from '../components/Navbar1';
+import { useAppKitAccount } from '@reown/appkit/react';
 
 const Home: FunctionComponent = () => {
-  const { isConnected } = useAppKitAccount()
-  const navigate = useNavigate()
+  const { isConnected } = useAppKitAccount();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const hasSeenOnboarding = document.cookie.includes('hasSeenOnboarding=true')
+    const hasSeenOnboarding = document.cookie.includes('hasSeenOnboarding=true');
 
     if (!hasSeenOnboarding) {
-      navigate('/onboard-home')
-      return
+      navigate('/onboard-home');
+      return;
     }
 
     if (!isConnected) {
-      navigate('/login')
+      navigate('/login');
     }
-  }, [navigate, isConnected])
+  }, [navigate, isConnected]);
 
   return (
     <div className="w-full min-h-screen relative bg-bg-white-0 overflow-hidden flex flex-col items-center justify-start leading-[normal] tracking-[normal]">
@@ -30,7 +31,7 @@ const Home: FunctionComponent = () => {
       </main>
       <Navbar1 />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
