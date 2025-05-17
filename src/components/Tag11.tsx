@@ -1,31 +1,31 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react'
 
 export type Tag11Type = {
-  className?: string;
-  editText?: string;
-  sublabel?: boolean;
-  editSublabel?: string;
+  className?: string
+  editText?: string
+  sublabel?: boolean
+  editSublabel?: string
 
   /** Variant props */
-  dismissIcon?: string;
-  state?: string;
-  style?: "Stroke" | "Gray";
-  type?: string;
-};
+  dismissIcon?: string
+  state?: string
+  style?: 'Stroke' | 'Gray'
+  type?: string
+}
 
 const Tag11: FunctionComponent<Tag11Type> = ({
-  className = "",
-  dismissIcon = "Off",
-  state = "Default",
-  style = "Stroke",
-  type = "📂 Basic",
-  editText = "Low Risk",
+  className = '',
+  dismissIcon = 'Off',
+  state = 'Default',
+  style = 'Stroke',
+  type = '📂 Basic',
+  editText = 'Low Risk',
   sublabel = false,
-  editSublabel = "(4)",
+  editSublabel = '(4)',
 }) => {
   return (
     <button
-      className={`cursor-pointer [border:none] py-1 px-2 bg-alpha-gray-alpha-10 rounded-md overflow-hidden flex flex-row items-center justify-center data-[type='📂:[&_Basic']:data-[state='Default']:data-[style='Gray']:data-[dismissIcon='Off']]:[border:unset] data-[type='📂:[&_Basic']:data-[state='Default']:data-[style='Gray']:data-[dismissIcon='Off']]:text-text-sub-600 ${className}`}
+      className={`w-[25vw] cursor-pointer [border:none] py-1 px-2 bg-alpha-gray-alpha-10 rounded-md overflow-hidden flex flex-row items-center justify-center data-[type='📂:[&_Basic']:data-[state='Default']:data-[style='Gray']:data-[dismissIcon='Off']]:[border:unset] data-[type='📂:[&_Basic']:data-[state='Default']:data-[style='Gray']:data-[dismissIcon='Off']]:text-text-sub-600 ${className}`}
       data-dismissIcon={dismissIcon}
       data-state={state}
       data-style={style}
@@ -42,7 +42,7 @@ const Tag11: FunctionComponent<Tag11Type> = ({
         )}
       </div>
     </button>
-  );
-};
+  )
+}
 
-export default Tag11;
+export default Tag11

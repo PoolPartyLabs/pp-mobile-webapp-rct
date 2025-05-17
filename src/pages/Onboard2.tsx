@@ -1,25 +1,58 @@
-import { FunctionComponent } from "react";
-import AutoLayoutVertical12 from "../components/AutoLayoutVertical12";
+import { FunctionComponent, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+import StepperDot11 from '../components/StepperDot11'
+import SkipButton from '../components/SkipButton'
 
-const Onboard: FunctionComponent = () => {
+const Onboard2: FunctionComponent = () => {
+  const navigate = useNavigate()
+
+  const handleNextClick = useCallback(() => {
+    navigate('/onboard-3')
+  }, [navigate])
+
   return (
-    <div className="w-full h-[812px] relative overflow-hidden flex flex-col items-end justify-end pt-[140px] px-0 pb-0 box-border bg-[url('/public/onboard3@3x.png')] bg-cover bg-no-repeat bg-[top] leading-[normal] tracking-[normal]">
-      <div className="w-[577px] h-[672px] relative max-w-[154%]">
-        <img
-          className="absolute top-[92px] left-[0px] w-[919px] h-[773px]"
-          alt=""
-          src="/group-41.svg"
-        />
-        <img
-          className="absolute top-[0px] left-[236px] w-[315.4px] h-[239.3px] z-[1]"
-          loading="lazy"
-          alt=""
-          src="/emergencyfunds3financeemergencyfunds.svg"
-        />
-      </div>
-      <AutoLayoutVertical12 />
+    <div className="w-full h-screen relative overflow-hidden bg-black bg-cover bg-no-repeat bg-[top] leading-[normal] tracking-[normal]">
+      <img
+        className="absolute w-[calc(100%_-_26px)] top-[109px] right-[12px] left-[14px] max-w-full overflow-hidden h-[349px]"
+        alt=""
+        src="/getajobpromotionstreamlinebruxelles.svg"
+      />
+      <section className="absolute bottom-0 left-0 rounded-t-radius-28 rounded-b-none bg-[#171717] w-full overflow-hidden flex flex-col items-center justify-start p-spacing-spacing-32 box-border gap-spacing-spacing-40 text-left text-[26px] text-[#fff] font-Web-title-1-normal">
+        <div className="self-stretch flex-1 flex flex-col items-center justify-start gap-3.5">
+          <h2 className="m-0 self-stretch relative text-[length:inherit] tracking-[-0.2px] leading-[32px] font-semibold font-[inherit]">
+            <span>{`Join communities that `}</span>
+            <span className="text-[#fff142]">invest together</span>
+          </h2>
+          <div className="self-stretch relative text-font-size-title-2 tracking-[-0.2px] leading-font-line-height-title-2 font-medium text-[#bdbdbd]">
+            Follow trusted creators, share strategies, and grow with the power
+            of the collective.
+          </div>
+        </div>
+        <div className="self-stretch flex flex-col items-start justify-start gap-spacing-spacing-14 text-[14px] text-[#656565]">
+          <button
+            className="cursor-pointer [border:none] py-0 px-2.5 bg-[#f7ce02] self-stretch h-10 rounded-radius-10 overflow-hidden shrink-0 flex flex-row items-center justify-center box-border gap-1 min-h-[40px] max-h-[40px]"
+            onClick={handleNextClick}
+          >
+            <img
+              className="w-5 relative h-5 overflow-hidden shrink-0 hidden"
+              alt=""
+            />
+            <div className="flex flex-row items-center justify-center py-0 px-1">
+              <div className="relative text-font-size-body-2 tracking-[-0.2px] leading-font-line-height-body-2 font-semibold font-Web-title-1-normal text-[#171717] text-left">
+                Next
+              </div>
+            </div>
+            <img
+              className="w-5 relative h-5 overflow-hidden shrink-0 hidden"
+              alt=""
+            />
+          </button>
+          <SkipButton navigateTo="/" className="self-stretch" />
+        </div>
+        <StepperDot11 size="Small" state={1} />
+      </section>
     </div>
-  );
-};
+  )
+}
 
-export default Onboard;
+export default Onboard2

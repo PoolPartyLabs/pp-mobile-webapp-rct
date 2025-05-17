@@ -1,17 +1,19 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react'
 
 export type HomeType = {
-  className?: string;
-  bottomDividerIcon?: string;
+  className?: string
+  bottomDividerIcon?: string
+  color?: string
 
   /** Variant props */
-  style?: string;
-};
+  style?: string
+}
 
 const Home: FunctionComponent<HomeType> = ({
-  className = "",
-  style = "Line",
+  className = '',
+  style = 'Line',
   bottomDividerIcon,
+  color = 'inherit',
 }) => {
   return (
     <div
@@ -23,9 +25,12 @@ const Home: FunctionComponent<HomeType> = ({
         loading="lazy"
         alt=""
         src={bottomDividerIcon}
+        style={{
+          filter: `invert(${color === 'white' ? 1 : 0})`,
+        }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -1,17 +1,17 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react'
 
 export type StepperDot11Type = {
-  className?: string;
+  className?: string
 
   /** Variant props */
-  size?: string;
-  state?: string;
-};
+  size?: string
+  state?: number
+}
 
 const StepperDot11: FunctionComponent<StepperDot11Type> = ({
-  className = "",
-  size = "Small",
-  state = "1st Active",
+  className = '',
+  size = 'Small',
+  state = 0,
 }) => {
   return (
     <div
@@ -19,11 +19,23 @@ const StepperDot11: FunctionComponent<StepperDot11Type> = ({
       data-size={size}
       data-state={state}
     >
-      <div className="w-2 relative rounded-77xl bg-stroke-soft-200 h-2" />
-      <div className="w-2 relative rounded-77xl bg-stroke-soft-200 h-2" />
-      <div className="w-2 relative rounded-77xl bg-[#c5139f] h-2" />
+      <div
+        className={`w-2 relative rounded-77xl ${
+          state === 0 ? 'bg-[#c5139f]' : 'bg-stroke-soft-200'
+        } h-2`}
+      />
+      <div
+        className={`w-2 relative rounded-77xl ${
+          state === 1 ? 'bg-[#c5139f]' : 'bg-stroke-soft-200'
+        } h-2`}
+      />
+      <div
+        className={`w-2 relative rounded-77xl ${
+          state === 2 ? 'bg-[#c5139f]' : 'bg-stroke-soft-200'
+        } h-2`}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default StepperDot11;
+export default StepperDot11

@@ -1,12 +1,12 @@
-import { FunctionComponent } from "react";
-import Tag11 from "./Tag11";
+import { FunctionComponent } from 'react'
+import Tag11 from './Tag11'
 
-export type AutoLayoutVertical9Type = {
-  className?: string;
-};
+export type PortfolioAllocationType = {
+  className?: string
+}
 
-const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
-  className = "",
+const PortfolioAllocation: FunctionComponent<PortfolioAllocationType> = ({
+  className = '',
 }) => {
   return (
     <section
@@ -17,7 +17,7 @@ const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
           <h3 className="m-0 relative text-[length:inherit] tracking-[-0.2px] leading-[24px] font-[500] font-[inherit]">
             Portfolio Allocation
           </h3>
-          <div className="h-7 rounded-radius-8 overflow-hidden flex flex-row items-center justify-center py-0 px-1.5 box-border gap-0.5 min-h-[28px] max-h-[28px] text-font-size-body-2 text-text-sub-600">
+          {/* <div className="h-7 rounded-radius-8 overflow-hidden flex flex-row items-center justify-center py-0 px-1.5 box-border gap-0.5 min-h-[28px] max-h-[28px] text-font-size-body-2 text-text-sub-600">
             <img
               className="w-5 relative h-5 overflow-hidden shrink-0 hidden"
               alt=""
@@ -33,16 +33,16 @@ const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
               alt=""
               src="/arrowrightsline.svg"
             />
-          </div>
+          </div> */}
         </div>
-        <div className="w-[503px] flex flex-row items-start justify-start gap-2 text-font-size-body-2">
-          <div className="flex-1 shadow-[0px_1px_2px_rgba(10,_13,_20,_0.03)] rounded-2xl bg-bg-white-0 border-stroke-soft-200 border-solid border-[0.5px] overflow-hidden flex flex-col items-start justify-start p-mini gap-4">
-            <div className="relative tracking-[-0.2px] leading-[24px] font-[600]">
+        <div className="w-full flex flex-col items-start justify-start gap-2 text-font-size-body-2">
+          <div className="w-full shadow-[0px_1px_2px_rgba(10,_13,_20,_0.03)] rounded-2xl bg-bg-white-0 border-stroke-soft-200 border-solid border-[0.5px] overflow-hidden flex flex-col items-start justify-start p-mini gap-4">
+            <div className="w-full relative tracking-[-0.2px] leading-[24px] font-[600]">
               Low Risk
             </div>
-            <div className="self-stretch flex flex-col items-start justify-start gap-spacing-spacing-8 text-font-size-paragraph text-text-sub-600">
-              <div className="self-stretch flex flex-row items-center justify-between gap-0">
-                <div className="relative leading-[16px] font-[500]">
+            <div className="w-full flex flex-col items-start justify-start gap-spacing-spacing-8 text-font-size-paragraph text-text-sub-600">
+              <div className="w-full flex flex-row items-center justify-between gap-0">
+                <div className="w-full relative leading-[16px] font-[500]">
                   Total claimed
                 </div>
                 <Tag11
@@ -55,8 +55,8 @@ const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
                   editSublabel="(4)"
                 />
               </div>
-              <div className="self-stretch flex flex-row items-center justify-between gap-0">
-                <div className="relative leading-[16px] font-[500]">
+              <div className="w-full flex flex-row items-center justify-between gap-0">
+                <div className="w-full relative leading-[16px] font-[500]">
                   All time
                 </div>
                 <Tag11
@@ -71,13 +71,13 @@ const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
               </div>
             </div>
           </div>
-          <div className="w-[248px] shadow-[0px_1px_2px_rgba(10,_13,_20,_0.03)] rounded-2xl bg-bg-white-0 border-stroke-soft-200 border-solid border-[0.5px] box-border overflow-hidden shrink-0 flex flex-col items-start justify-start p-mini gap-4">
-            <div className="relative tracking-[-0.2px] leading-[24px] font-[600]">
-              Stablecoin
+          <div className="w-full shadow-[0px_1px_2px_rgba(10,_13,_20,_0.03)] rounded-2xl bg-bg-white-0 border-stroke-soft-200 border-solid border-[0.5px] box-border overflow-hidden flex flex-col items-start justify-start p-mini gap-4">
+            <div className="w-full relative tracking-[-0.2px] leading-[24px] font-[600]">
+              High Risk
             </div>
-            <div className="w-[216px] flex flex-col items-start justify-start gap-spacing-spacing-8 text-font-size-paragraph text-text-sub-600">
-              <div className="w-[216px] flex flex-row items-center justify-between gap-0">
-                <div className="relative leading-[16px] font-[500]">
+            <div className="w-full flex flex-col items-start justify-start gap-spacing-spacing-8 text-font-size-paragraph text-text-sub-600">
+              <div className="w-full flex flex-row items-center justify-between gap-0">
+                <div className="w-full relative leading-[16px] font-[500]">
                   Total claimed
                 </div>
                 <Tag11
@@ -90,8 +90,8 @@ const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
                   editSublabel="(4)"
                 />
               </div>
-              <div className="w-[216px] flex flex-row items-center justify-between gap-0">
-                <div className="relative leading-[16px] font-[500]">
+              <div className="w-full flex flex-row items-center justify-between gap-0">
+                <div className="w-full relative leading-[16px] font-[500]">
                   All time
                 </div>
                 <Tag11
@@ -106,10 +106,10 @@ const AutoLayoutVertical9: FunctionComponent<AutoLayoutVertical9Type> = ({
               </div>
             </div>
           </div>
-        </div>
+        </div>{' '}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default AutoLayoutVertical9;
+export default PortfolioAllocation

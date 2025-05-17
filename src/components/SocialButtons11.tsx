@@ -1,24 +1,26 @@
-import { FunctionComponent } from "react";
-import MajorBrandLogos11 from "./MajorBrandLogos11";
+import { FunctionComponent } from 'react'
+import MajorBrandLogos11 from './MajorBrandLogos11'
 
 export type SocialButtons11Type = {
-  className?: string;
-  editText?: string;
+  className?: string
+  editText?: string
 
   /** Variant props */
-  brand?: string;
-  onlyIcon?: string;
-  state?: string;
-  style?: string;
-};
+  brand?: string
+  onlyIcon?: string
+  state?: string
+  style?: string
+  onClick?: () => void
+}
 
 const SocialButtons11: FunctionComponent<SocialButtons11Type> = ({
-  className = "",
-  brand = "Apple",
-  onlyIcon = "Off",
-  state = "Default",
-  style = "Filled",
-  editText = "Sign in with Google",
+  className = '',
+  brand = 'Apple',
+  onlyIcon = 'Off',
+  state = 'Default',
+  style = 'Filled',
+  editText = 'Sign in with Google',
+  onClick,
 }) => {
   return (
     <button
@@ -27,13 +29,14 @@ const SocialButtons11: FunctionComponent<SocialButtons11Type> = ({
       data-onlyIcon={onlyIcon}
       data-state={state}
       data-style={style}
+      onClick={onClick}
     >
       <MajorBrandLogos11 company="Google" style="White" />
       <div className="relative text-font-size-body-2 tracking-[-0.2px] leading-font-line-height-body-2 font-font-weight-default-medium font-Web-title-1-normal text-text-strong-950 text-left">
         {editText}
       </div>
     </button>
-  );
-};
+  )
+}
 
-export default SocialButtons11;
+export default SocialButtons11
